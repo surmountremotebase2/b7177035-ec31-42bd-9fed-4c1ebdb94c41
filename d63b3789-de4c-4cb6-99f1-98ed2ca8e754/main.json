@@ -1,1 +1,1 @@
-{"groups": {}, "interval": "1hour", "assets": [null, null, null], "strategy": [{"type": "IF", "conditions": [{"type": "BINARY", "first": {"name": "EQR", "args": {"ticker": "MSFT", "length": "1"}, "advanced": {}}, "second": {"name": "constant", "args": {"value": "12"}}, "comp": ">", "operator": ""}], "if_action": {"type": "ACTION", "steps": [{"action": "allocation", "amount": 100}]}, "else_action": {"type": "ACTION", "steps": []}}]}
+{"interval": "", "assets": ["MSFT", "AAPL", "NVDA"], "strategy": []}
