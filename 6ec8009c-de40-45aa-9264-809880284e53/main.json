@@ -1,1 +1,1 @@
-{"interval": "", "assets": ["SPXL", "META"], "strategy": []}
+{"groups": {}, "interval": "5mins", "assets": ["META"], "strategy": [{"type": "IF", "conditions": [{"type": "BINARY", "first": {"name": "PRICE", "args": {"ticker": "META"}}, "second": {"name": "constant", "args": {"value": "100"}}, "comp": ">", "operator": ""}], "if_action": {"type": "ACTION", "steps": [{"action": "allocation", "asset": "META", "amount": 100}]}, "else_action": {"type": "ACTION", "steps": [{"action": "allocation", "asset": "META", "amount": "0"}]}}]}
