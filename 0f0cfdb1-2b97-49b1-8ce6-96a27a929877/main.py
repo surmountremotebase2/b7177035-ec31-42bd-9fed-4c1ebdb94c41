@@ -3,13 +3,13 @@ from surmount.logging import log
 
 class TradingStrategy(Strategy):
     def __init__(self):
-        self.tickers = ["AAPL", "SPY", "UVXY"]
-        self.weights = [30, 30, 30]
+        self.tickers = ["MSFT", "NVDA"]
+        self.weights = [50, 50]
         self.count = 0
 
     @property
     def interval(self):
-        return "1day"
+        return "5min"
 
     @property
     def assets(self):
