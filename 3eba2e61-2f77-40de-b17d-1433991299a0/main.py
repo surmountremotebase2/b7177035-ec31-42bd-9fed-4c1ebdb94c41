@@ -1,84 +1,44 @@
-from surmount.base_class import Strategy, TargetAllocation
-from surmount.technical_indicators import SMA
+from surmount.base_class import Strategy, TargetAllocation, backtest
 from surmount.logging import log
-import pandas as pd 
-import numpy as np 
 
 class TradingStrategy(Strategy):
-    @property
-    def assets(self):
-        # Define the assets to be used in the strategy
-        return ["SPXL", "SPY", "SPXS"]
 
-    @property
-    def interval(self):
-        # The data interval desired for the strategy. Daily in this case.
-        return "4hour"
+   def __init__(self):
+      self.alloc = {}
 
-    def run(self, data):
-        # This is the principal method where the strategy logic is defined.
-        
-        # Calculate the 5-day Simple Moving Average (SMA) for SPXL and SPY
-        sma_SPXL = SMA("SPXL", data["ohlcv"], length=5)
-        sma_SPY = SMA("SPY", data["ohlcv"], length=5)
-        sma_SPXS = SMA("SPXS", data["ohlcv"], length=5)
-        
-        # Ensure that we have enough data points to proceed
-        if not sma_SPXL or not sma_SPY or not sma_SPXS or len(sma_SPXL) < 5 or len(sma_SPY) < 5 or len(sma_SPXS) < 5:
-            #log("Insufficient data for SMA calculation.")
-            # Returning a neutral or "do-nothing" allocation if insufficient data
-            return TargetAllocation({})
-        
-        # Check the recent performance difference between SPXL and SPY
-        # If SPXL has been underperforming SPY, allocate toward SPXL
+   @property
+   def assets(self):
+      return ["SVXY"]
 
-        spxl_delta = (sma_SPXL[-1] - sma_SPXL[-2]) / sma_SPXL[-1]
-        spy_delta = (sma_SPY[-1] - sma_SPY[-2]) / sma_SPY[-1]
-        spxs_delta = (sma_SPXS[-1] - sma_SPXS[-2]) / sma_SPXS[-1]
+   @property
+   def interval(self):
+      return "1hour"
 
-        spy_recents = sma_SPY[-15:]
-        spy_differences = [spy_recents[i+1] - spy_recents[i] for i in range(len(spy_recents)-1)]
+   def run(self, data):
+      if len(data["ohlcv"]) == 0: 
+         self.alloc = {"SVXY":0}
+         return TargetAllocation(self.alloc)
+      data1 = data["ohlcv"][-1]["SVXY"]
+      if "14:00" in data1["date"]:
+         self.alloc = {"SVXY":0}
+         return TargetAllocation(self.alloc)
+      high = data1["high"]
+      low = data1["low"]
+      mid = high + low / 2
+      if data1["close"] <= mid: return TargetAllocation({"SVXY":1})
+      return TargetAllocation({"SVXY":0})
 
-        # Determine overall trend based on the last 5 days
-        upward_trend = sum(d > 0 for d in spy_differences)
-        downward_trend = sum(d < 0 for d in spy_differences)
+from datetime import datetime
 
-        #log("Checking trends")
-        if upward_trend < downward_trend:
-            allocation_dict = {"SPXS": 0.0}
-            #log("Upward trend")
-            if spxl_delta < spy_delta * 1.15:
-                allocation_dict = {"SPXL": 0.0}
-            else:
-                allocation_dict = {"SPXL": 1.0}
-        elif upward_trend > downward_trend:
-            #log("downward trend")
-            allocation_dict = {"SPXL": 0.0}
-            if spxs_delta < abs(spy_delta * 1.15):
-                allocation_dict = {"SPXS": 0.0}
-            else:
-                allocation_dict = {"SPXS": 1.0}
-        else:
-            #log("In the else")
-            return TargetAllocation({})
+start = datetime.strptime("2024-04-01", '%Y-%m-%d')
+end = datetime.strptime("2024-04-20", '%Y-%m-%d')
+a = backtest(TradingStrategy(), start, end, 10000)
 
-        '''if sma_SPXL[-1] < sma_SPY[-1]:
-            #log("SPXL underperforming SPY, buying SPXL.")
-            allocation_dict = {"SPXL": 1.0} # Put 100% in SPXL
-        else:
-            #log("SPXL not underperforming or outperforming SPY, liquidating SPXL.")
-            allocation_dict = {"SPXL": 0.0} # Liquidate all SPXL
+print(a['stats'])
 
-        if spxl_delta < spy_delta:
-            #log("SPXL Underperforming spy, buying SPXL.")
-            allocation_dict = {"SPXL": 0.00}
-        else:
-            #log("SPXL caught up - liquidating SPXL.")
-            allocation_dict = {"SPXL": 0.0}
-        '''
-        
-        if not allocation_dict:
-            allocation_dict = TargetAllocation({})
+# from surmount.data_client import _FMPClient
 
-        # Return the target allocation based on our logic
-        return TargetAllocation(allocation_dict)
+# client = _FMPClient()
+# print(client.get_stock_splits({'SVXY', 'PALAD', 'BON', 'FLNT', 'SPXV'},start, end))
+
+# print(client.get_history("SVXY", "1hour", start, end))
