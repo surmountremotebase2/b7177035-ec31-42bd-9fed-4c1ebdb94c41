@@ -18,11 +18,3 @@ class TradingStrategy(Strategy):
 
     def run(self, data):
         return TargetAllocation({'GME': 1})
-
-from datetime import datetime
-
-start = datetime.strptime("2022-11-10", '%Y-%m-%d')
-end = datetime.strptime("2022-11-16", '%Y-%m-%d')
-a = backtest(TradingStrategy(), start, end, 1000)
-
-print(a['stats'])
