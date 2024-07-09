@@ -17,4 +17,4 @@ class TradingStrategy(Strategy):
         return "1day"
 
     def run(self, data):
-        return {'GME': 1}
+        return {'FAZ': 1}
