@@ -6,7 +6,7 @@ from surmount.data import Asset
 
 class TradingStrategy(Strategy):
     def __init__(self):
-        self._assets = ['SPY']
+        self._assets = []
 
     @property
     def assets(self):
