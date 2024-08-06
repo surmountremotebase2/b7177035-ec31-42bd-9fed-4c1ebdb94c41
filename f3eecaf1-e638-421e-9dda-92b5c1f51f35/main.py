@@ -19,5 +19,6 @@ class TradingStrategy(Strategy):
         self.count += 1
         if (True):
             allocation_dict = {self.tickers[i]: self.weights[i]/sum(self.weights) for i in range(len(self.tickers))}
-            return TargetAllocation(allocation_dict)
+            return TargetAllocation({"AAPL": 0.0})
+            #return TargetAllocation(allocation_dict)
         return None
