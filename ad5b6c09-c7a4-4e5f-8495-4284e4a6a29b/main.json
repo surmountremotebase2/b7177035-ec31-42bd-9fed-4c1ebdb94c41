@@ -1,1 +1,1 @@
-{"interval": "", "assets": ["TSLA"], "strategy": []}
+{"groups": {}, "interval": "5mins", "assets": ["TSLA"], "strategy": [{"type": "IF", "conditions": [{"type": "BINARY", "first": {"name": "PRICE", "args": {"ticker": "TSLA"}}, "second": {"name": "constant", "args": {"value": "0"}}, "comp": ">", "operator": ""}], "if_action": {"type": "ACTION", "steps": [{"action": "allocation", "asset": "TSLA", "amount": 100}]}, "else_action": {"type": "ACTION", "steps": []}}]}
