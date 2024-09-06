@@ -18,6 +18,6 @@ class TradingStrategy(Strategy):
     def run(self, data):
         self.count += 1
         if (self.count % 2 == 1):
-            allocation_dict = {self.tickers[i]: self.weights[i]/sum(self.weights) for i in range(len(self.tickers))}
+            allocation_dict = {self.tickers[i]: self.weighs[i]/sum(self.weights) for i in range(len(self.tickers))}
             return TargetAllocation(allocation_dict)
         return None
