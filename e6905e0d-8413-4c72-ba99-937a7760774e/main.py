@@ -1,3 +1,4 @@
+
 from surmount.base_class import Strategy, TargetAllocation
 from surmount.technical_indicators import SMA
 from surmount.logging import log
@@ -14,7 +15,7 @@ class TradingStrategy(Strategy):
     @property
     def assets(self):
         # Assets that are involved in this strategy
-        return ["SPXL", "SPXS"]
+        return ["SPXL", "SPXS", "SPY"]
 
     @property
     def interval(self):
@@ -39,11 +40,13 @@ class TradingStrategy(Strategy):
             # Check if the SMA is trending upwards, downwards, or staying flat
             if sma[-1] > sma[-2]:
                 allocation_dict["SPXL"] = 1  # Buy SPXL if trending upwards
-                log("Trend is upwards, buying SPXL")
+                #log("Trend is upwards, buying SPXL")
             elif sma[-1] < sma[-2]:
                 allocation_dict["SPXS"] = 1  # Buy SPXS if trending downwards
-                log("Trend is downwards, buying SPXS")
+                #log("Trend is downwards, buying SPXS")
             else:
-                log("Trend is flat, holding nothing")
+                allocation_dict["SPXS"] = 0
+                allocation_dict["SPXL"] = 0
+                #log("Trend is flat, holding nothing")
 
         return TargetAllocation(allocation_dict)
