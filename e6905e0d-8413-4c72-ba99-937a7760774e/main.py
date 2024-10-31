@@ -42,7 +42,8 @@ class TradingStrategy(Strategy):
                 allocation_dict["SPXL"] = 1  # Buy SPXL if trending upwards
                 #log("Trend is upwards, buying SPXL")
             elif sma[-1] < sma[-2]:
-                allocation_dict["SPXS"] = 1  # Buy SPXS if trending downwards
+                allocation_dict["SPXS"] = 0.5  # Buy SPXS if trending downwards
+                allocation_dict["SPXL"] = 0.5 
                 #log("Trend is downwards, buying SPXS")
             else:
                 allocation_dict["SPXS"] = 0
