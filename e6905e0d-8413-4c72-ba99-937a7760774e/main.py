@@ -36,7 +36,7 @@ class TradingStrategy(Strategy):
         
         allocation_dict = {"SPXL": 0, "SPXS": 0}  # Initial allocation (no holdings)
         
-        if len(sma) >= 2
+        if len(sma) >= 2:
             # Check if the SMA is trending upwards, downwards, or staying flat
             if sma[-1] > sma[-2]:
                 allocation_dict["SPXL"] = 1  # Buy SPXL if trending upwards
