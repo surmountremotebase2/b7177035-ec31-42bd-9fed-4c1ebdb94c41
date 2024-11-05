@@ -1,4 +1,3 @@
-
 from surmount.base_class import Strategy, TargetAllocation
 from surmount.technical_indicators import SMA
 from surmount.logging import log
@@ -46,8 +45,8 @@ class TradingStrategy(Strategy):
                 allocation_dict["SPXL"] = 0.5 
                 #log("Trend is downwards, buying SPXS")
             else:
-                allocation_dict["SPXS"] = 0
-                allocation_dict["SPXL"] = 0
+                allocation_dict["SPXS"] = 0.7
+                allocation_dict["SPXL"] = 0.3
                 #log("Trend is flat, holding nothing")
 
         return TargetAllocation(allocation_dict)
