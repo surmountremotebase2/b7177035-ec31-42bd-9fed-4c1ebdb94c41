@@ -20,7 +20,7 @@ class TradingStrategy(Strategy):
     @property
     def interval(self):
         # The data interval required for this strategy
-        return "1day"
+        return "4hour"
 
     def run(self, data):
         """
